@@ -1,0 +1,12 @@
+{
+    "0": {
+        "name": "Sushi hub orderer",
+        "icon": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.foresthillchase.com.au%2Fsites%2Fdefault%2Ffiles%2Fstyles%2Fstore_detail_image%2Fpublic%2F2023-03%2FSushi%2520Hub%2520Logo.png%3Fitok%3D99weMIWH&f=1&nofb=1&ipt=84c4035fc2c146400f4bd5070fd1f3531f8228b17dd7f30f7fce6a63f81e1fbb",
+        "code": "alert(`It's a very`);"
+    },
+    "1": {
+        "name": "Nuke Grabber",
+        "icon": "https://nathblade16.github.io/Nuke-Grabber/icon.png",
+        "code": "var el = $.parseHTML(`<window width=\"800\" height=\"500\" title=\"Nuke Grabber\"><style>\niframe[seamless]{\n  background-color: transparent;\n  border: 0px none transparent;\n  padding: 0px;\n  overflow: hidden;\n}\n.frame-container {\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  overflow: hidden;\n  padding: 0px;\n  margin: 0px;\n}\n  </style>\n  \n  <div class=\"frame-container\">\n    \n<iframe height=\"100%\" seamless=\"seamless\" width=\"100%\" src=\"https://nathblade16.github.io/Nuke-Grabber\"></iframe>\n<!--Make sure your site has anti-framing disabled or your app will show a blank screen!-->\n\n  </div> \n </window>`);\n\ndocument.body.append(el[0]);\n$(el).updateWindow();"
+    }
+}
