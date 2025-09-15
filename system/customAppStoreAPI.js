@@ -10,7 +10,7 @@ $(window).on('xpboot', () => {
 function refreshApps() {
 	xp.filesystem.listDir('/Program Files', (name) => {
 		if (name.charAt(name.length - 1) !== '/') {
-			refreshApp(xp.filesystem.basename(name), "/Program Icons/" + xp.filesystem.basename(name).replace('.js', '.txt'));
+			refreshApp(xp.filesystem.basename(name), "/Program Icons/" + xp.filesystem.basename(name) + ".txt");
 		}
 	});
 }
