@@ -4,14 +4,16 @@ xp.controlpanel.add("Startup Repair", () => {
 
 xp.controlpanel.add('Factory Reset', () => {
     xp.dialog("FINAL WARNING", "Are you sure you want to factory reset? ALL DATA WILL BE LOST", () => {
-        window.indexedDB.databases().then((r) => {
-            for (var i = 0; i < r.length; i++) window.indexedDB.deleteDatabase(r[i].name);
-        }).then(() => {
-            localStorage.clear()
-            alert('All data cleared.');
-            location.reload()
+        xp.filesystem.listDir("/", (e) => {
+            if (e[e.length - 1] === "/") {
+                xp.filesystem.deleteDir(e, () => { });
+            } else {
+                xp.filesystem.deleteFile(e, () => { });
+            }
         });
-    });
+        location.href = location.href.split("#")[0];
+        localStorage.clear();
+    }, true);
 });
 
 var event = new Event('xpboot');
