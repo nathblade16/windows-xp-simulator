@@ -1,7 +1,7 @@
-$('<link/>', {rel: 'stylesheet', id: 'theme'}).appendTo('head');
+$('<link/>', { rel: 'stylesheet', id: 'theme' }).appendTo('head');
 loadConfig();
 function logInUser(user) {
-  $('<link/>', {rel: 'stylesheet', id: 'theme'}).appendTo('head');
+  $('<link/>', { rel: 'stylesheet', id: 'theme' }).appendTo('head');
   configFile = `/Documents and Settings/${user}/config.json`;
   loadConfig(() => {
     $('windows').initWindows();
@@ -15,45 +15,51 @@ function logInUser(user) {
     }, 1500);
   });
 }
-document.onkeydown = function(e) {
+document.onkeydown = function (e) {
   if (e.which == 83 && e.ctrlKey && e.shiftKey) {
-    if(prompt("activate safe mode, this will log in the default user") == "yes"){
-      $('<link/>', {rel: 'stylesheet', id: 'theme'}).appendTo('head');
-  configFile = `/config.json`;
-  loadConfig(() => {
-    $('windows').initWindows();
-    xp.startmenu.update();
-    setTimeout(() => {
-      xp.filesystem.listDir('/WINDOWS/startup', (name) => {
-        if (name.charAt(name.length - 1) !== '/') {
-          explorer.fileHandlers.open(xp.filesystem.addPaths('/WINDOWS/startup', name));
-        }
+    if (prompt("activate safe mode, this will log in the default user") == "yes") {
+      $('<link/>', { rel: 'stylesheet', id: 'theme' }).appendTo('head');
+      configFile = `/config.json`;
+      loadConfig(() => {
+        $('windows').initWindows();
+        xp.startmenu.update();
+        setTimeout(() => {
+          xp.filesystem.listDir('/WINDOWS/startup', (name) => {
+            if (name.charAt(name.length - 1) !== '/') {
+              explorer.fileHandlers.open(xp.filesystem.addPaths('/WINDOWS/startup', name));
+            }
+          });
+        }, 1500);
       });
-    }, 1500);
-  });
     }
+  }
 }
-}
-xp.filesystem.fs.root.getDirectory('/Documents and Settings', {create: false}, function(dirEntry) {
+xp.filesystem.fs.root.getDirectory('/Documents and Settings', { create: false }, function (dirEntry) {
   var dirReader = dirEntry.createReader();
   var entries = [];
-  
+
   function readEntries() {
-    dirReader.readEntries (function(results) {
+    dirReader.readEntries(function (results) {
       if (!results.length) {
         if (entries.length === 0) {
-          $.getScript('setup.js');
+          xp.error("An error occured during startup, startup repair will now run", () => {
+            $.ajax({
+              url: "system/startup-repair.js",
+              dataType: "script",
+              success: () => { openApp("startup-repair"); }
+            });
+          })
         } else if (entries.length === 1) {
           logInUser(entries[0].name.split('/')[0]);
         } else {
           var win = new Window({
-              width: 594,
-              height: 300,
-              title: 'Welcome to RebornXP',
-              canClose: false,
-              canResize: false,
-              canMinimize: false,
-              center: true
+            width: 594,
+            height: 300,
+            title: 'Welcome to RebornXP',
+            canClose: false,
+            canResize: false,
+            canMinimize: false,
+            center: true
           });
 
           win.content(`
@@ -98,9 +104,9 @@ xp.filesystem.fs.root.getDirectory('/Documents and Settings', {create: false}, f
   <img class="userimgopt" account="${acct}" src="${config.profile.image}"/>
   <div style="text-align:center">${acct}</div>
 </td>`);
-              $(el).find('img').on('click', function() {
-                win.el.find('.userimgopt').each(function() {
-                    $(this).removeClass('selected');
+              $(el).find('img').on('click', function () {
+                win.el.find('.userimgopt').each(function () {
+                  $(this).removeClass('selected');
                 });
                 $(this).addClass('selected');
                 win.el.find('.next').removeAttr('disabled');
@@ -109,13 +115,13 @@ xp.filesystem.fs.root.getDirectory('/Documents and Settings', {create: false}, f
             });
           });
 
-          win.el.find('.next').on('click', function() {
+          win.el.find('.next').on('click', function () {
             var acct = win.el.find('.userimgopt.selected').attr('account');
             win.content('<div style="margin-left:32px;"><h1 style="font-weight:normal;">Welcome</h1></div>');
             setTimeout(() => {
               logInUser(acct);
               win.close();
-              if(xp.theme.name == "luna"){xp.audio.playURL('https://cdn.glitch.com/01d2e04f-e49d-4304-aa9e-55b9849b4cce%2FWindows%20XP%20Logon%20Sound.wav?1522620571979');}
+              if (xp.theme.name == "luna") { xp.audio.playURL('https://cdn.glitch.com/01d2e04f-e49d-4304-aa9e-55b9849b4cce%2FWindows%20XP%20Logon%20Sound.wav?1522620571979'); }
             }, 1000);
           });
         }

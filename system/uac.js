@@ -47,7 +47,7 @@ $(window).on('xpboot', () => {
       </center>
   </div>
 </div>`);
-    
+
     function changeAccount(acct) {
       win.el.find('.outercontent').css('background-color', '#fff');
       var acctname = acct.name === xp.profile.name ? 'your' : acct.name + '\'s';
@@ -111,7 +111,7 @@ $(window).on('xpboot', () => {
       });
       win.el.find('.cancel').on('click', () => changeAccount(acct));
     }
-    
+
     function changeName(acct) {
       win.el.find('.outercontent').css('background-color', '#fff');
       var acctname = acct.name === xp.profile.name ? 'your' : acct.name + '\'s';
@@ -136,7 +136,7 @@ $(window).on('xpboot', () => {
         xp.profile = acct;
         var newUsername = win.el.find('.username').val();
         if (xp.profile.name !== newUsername) {
-          xp.filesystem.moveDir(`/Documents and Settings/${xp.profile.name}`, `/Documents and Settings/${newUsername}`, () => {});
+          xp.filesystem.moveDir(`/Documents and Settings/${xp.profile.name}`, `/Documents and Settings/${newUsername}`, () => { });
           xp.profile.name = newUsername;
         }
         saveConfig(() => {
@@ -148,7 +148,7 @@ $(window).on('xpboot', () => {
       });
       win.el.find('.cancel').on('click', () => changeAccount(acct));
     }
-    
+
     function changePicture(acct) {
       win.el.find('.outercontent').css('background-color', '#fff');
       var acctname = acct.name === xp.profile.name ? 'your' : acct.name + '\'s';
@@ -187,29 +187,29 @@ $(window).on('xpboot', () => {
           <button class="cancel">Cancel</button>
         </div>
       </p>`);
-      
+
       if (win.el.find(`.userimgopt[src="${acct.image}"]`).length > 0)
         win.el.find(`.userimgopt[src="${acct.image}"]`).addClass('selected');
       else
         win.el.find('.images').append(`<td><img class="userimgopt selected" src="${acct.image}"/></td>`);
-      
-      win.el.find('.userimgopt').on('click', function() {
-        win.el.find('.userimgopt').each(function() {
+
+      win.el.find('.userimgopt').on('click', function () {
+        win.el.find('.userimgopt').each(function () {
           $(this).removeClass('selected');
         });
         $(this).addClass('selected');
       });
-      
+
       win.el.find('.browse').on('click', () => {
         xp.filesystem.openFileDialog((file) => {
           xp.filesystem.toURL(file, (url) => {
-            win.el.find('.userimgopt').each(function() {
+            win.el.find('.userimgopt').each(function () {
               $(this).removeClass('selected');
             });
             var el = $($.parseHTML(`<td><img class="userimgopt selected" src="${url}"/></td>`));
             win.el.find('.images').append(el);
-            el.find('img').on('click', function() {
-              win.el.find('.userimgopt').each(function() {
+            el.find('img').on('click', function () {
+              win.el.find('.userimgopt').each(function () {
                 $(this).removeClass('selected');
               });
               $(this).addClass('selected');
@@ -217,7 +217,7 @@ $(window).on('xpboot', () => {
           });
         });
       });
-      
+
       win.el.find('.change').on('click', () => {
         var oldProfile = xp.profile;
         xp.profile = acct;
@@ -231,7 +231,7 @@ $(window).on('xpboot', () => {
       });
       win.el.find('.cancel').on('click', () => changeAccount(acct));
     }
-    
+
     function listAccounts() {
       xp.filesystem.listDir('/Documents and Settings', (acct) => {
         acct = acct.split('/')[0];
@@ -246,13 +246,13 @@ $(window).on('xpboot', () => {
         });
       });
     }
-    
+
     listAccounts();
-    
+
     win.el.find('.cp_option.new_acct').on('click', () => {
       newAccount();
     });
-    
+
     win.el.find('.cp_option.change_acct').on('click', () => {
       win.el.find('.outercontent').css('background-color', '#fff');
       win.el.find('.content').html(`
@@ -266,7 +266,7 @@ $(window).on('xpboot', () => {
       </center>`);
       listAccounts();
     });
-    
+
     function newAccount() {
       let win = new Window({
         width: 594,
@@ -331,7 +331,7 @@ $(window).on('xpboot', () => {
 </div>
       `);
 
-      win.el.find('.username').on('keyup', function() {
+      win.el.find('.username').on('keyup', function () {
         console.log($(this).val());
         if ($(this).val() === '') {
           win.el.find('.next').attr('disabled', 'disabled');
@@ -340,56 +340,62 @@ $(window).on('xpboot', () => {
         }
       });
 
-      win.el.find('.next').on('click', function() {
-          if (win.el.find('.username').val() === '') {
-              xp.alert('You need to type a username in order to continue!');
-          } else {
-              xp.profile.image = win.el.find('.userimgopt.selected').attr('src');
-              xp.profile.name = win.el.find('.username').val();
-              var oldConfigFile = configFile;
-              configFile = `/Documents and Settings/${xp.profile.name}/config.json`;
-              xp.wallpaper.href = 'https://cdn.glitch.com/01d2e04f-e49d-4304-aa9e-55b9849b4cce%2FBliss.jpg?1519950052202';
-              win.content(`
+      win.el.find('.next').on('click', function () {
+        if (win.el.find('.username').val() === '') {
+          xp.alert('You need to type a username in order to continue!');
+        } else {
+          xp.profile.image = win.el.find('.userimgopt.selected').attr('src');
+          xp.profile.name = win.el.find('.username').val();
+          if (!safemode) {
+            var oldConfigFile = configFile;
+          }
+          configFile = `/Documents and Settings/${xp.profile.name}/config.json`;
+          xp.wallpaper.href = 'https://cdn.glitch.com/01d2e04f-e49d-4304-aa9e-55b9849b4cce%2FBliss.jpg?1519950052202';
+          win.content(`
 <div style="margin-left:32px;">
     <h1 style="font-weight:normal;">Please wait while we create the user account.</h1>
 </div>`);
-              setTimeout(() => {
-                  requiredDirectories = [
-                      `/Documents and Settings`,
-                      `/Documents and Settings/${xp.profile.name}`,
-                      `/Documents and Settings/${xp.profile.name}/My Documents`,
-                      `/Documents and Settings/${xp.profile.name}/My Documents/My Pictures`,
-                      `/Documents and Settings/${xp.profile.name}/My Documents/My Videos`,
-                      `/Documents and Settings/${xp.profile.name}/My Documents/My Music`
-                  ];
-                  var i = 0;
-                  function createDirs() {
-                      var dirToCreate = requiredDirectories[i];
-                      if (dirToCreate !== undefined) {
-                          xp.filesystem.createDir(dirToCreate, (e) => {
-                              i ++;
-                              createDirs();
-                          });
-                      } else {
-                          saveConfig(() => {
-                            configFile = oldConfigFile;
-                            loadConfig(() => {
-                              win.close();
-                            });
-                          });
-                      }
-                  }
+          setTimeout(() => {
+            requiredDirectories = [
+              `/Documents and Settings`,
+              `/Documents and Settings/${xp.profile.name}`,
+              `/Documents and Settings/${xp.profile.name}/My Documents`,
+              `/Documents and Settings/${xp.profile.name}/My Documents/My Pictures`,
+              `/Documents and Settings/${xp.profile.name}/My Documents/My Videos`,
+              `/Documents and Settings/${xp.profile.name}/My Documents/My Music`
+            ];
+            var i = 0;
+            function createDirs() {
+              var dirToCreate = requiredDirectories[i];
+              if (dirToCreate !== undefined) {
+                xp.filesystem.createDir(dirToCreate, (e) => {
+                  i++;
                   createDirs();
-              }, 2000);
-          }
+                });
+              } else {
+                saveConfig(() => {
+                  if (!safemode) {
+                    configFile = oldConfigFile;
+                    loadConfig(() => {
+                      win.close();
+                    });
+                  }else{
+                    win.close()
+                  }
+                });
+              }
+            }
+            createDirs();
+          }, 2000);
+        }
       });
 
-      win.el.find('.userimgopt').on('click', function() {
-          win.el.find('.userimgopt').each(function() {
-              $(this).removeClass('selected');
-          });
-          $(this).addClass('selected');
-          win.el.find('.userimg').attr('src', $(this).attr('src'));
+      win.el.find('.userimgopt').on('click', function () {
+        win.el.find('.userimgopt').each(function () {
+          $(this).removeClass('selected');
+        });
+        $(this).addClass('selected');
+        win.el.find('.userimg').attr('src', $(this).attr('src'));
       });
     }
   });
